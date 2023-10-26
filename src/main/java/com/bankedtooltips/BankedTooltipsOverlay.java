@@ -170,29 +170,17 @@ public class BankedTooltipsOverlay extends Overlay implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("Key pressed" + e.getKeyCode());
-
         if (!config.useKeybind()) return;
-
-        if (config.modifierKey().matches(e)) {
+        if (config.modifierKey().matches(e))
             keybindPressed = true;
-            System.out.println("Keybind pressed");
-        } else {
-            System.out.println("Invalid key pressed");
-        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("Key released");
         if (!config.useKeybind()) return;
 
-        if (config.modifierKey().matches(e)) {
+        if (config.modifierKey().matches(e))
             keybindPressed = false;
-            System.out.println("Keybind released");
-        } else {
-            System.out.println("Invalid key released");
-        }
     }
 }
 

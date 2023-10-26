@@ -70,13 +70,8 @@ public class BankedTooltipsPlugin extends Plugin
 		Optional<BankSave> bankSave = dataStore.getDataForCurrentBank(worldType, String.valueOf(client.getAccountHash()));
 
 
-		if (!bankSave.isEmpty()) {
-			System.out.println("Found bank save for world type " + worldType + " and account hash " + client.getAccountHash());
+		if (!bankSave.isEmpty())
 			handleBankSave(bankSave.get());
-			return;
-		} else {
-			System.out.println("No bank save found for world type " + worldType + " and account hash " + client.getAccountHash());
-		}
 	}
 
 	private void handleBankSave(BankSave newSave) {
@@ -98,8 +93,6 @@ public class BankedTooltipsPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged container) {
 		if (container.getContainerId() != InventoryID.BANK.getId()) return;
-
-		System.out.println("Bank container changed" + container.toString());
 
 		BankWorldType worldType = BankWorldType.forWorld(client.getWorldType());
 		ItemContainer bank = container.getItemContainer();
