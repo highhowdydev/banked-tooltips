@@ -143,6 +143,7 @@ public class BankedTooltipsOverlay extends Overlay implements KeyListener {
             int quantity = config.includeInventory() ? itemQuantity + bankQuantity : bankQuantity;
             long price = getItemPrice(quantity, itemId);
 
+            // TODO: High alch prices?
             return price > 0 ? QuantityFormatter.formatNumber(quantity) + " ("
                     + QuantityFormatter.quantityToStackSize(price) + " gp)"
                     : QuantityFormatter.formatNumber(quantity);
