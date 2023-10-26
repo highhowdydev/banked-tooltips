@@ -9,17 +9,13 @@ import java.awt.event.KeyEvent;
 import java.util.Optional;
 import javax.inject.Inject;
 
+import net.runelite.api.*;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.util.ColorUtil;
 
+import net.runelite.client.util.QuantityFormatter;
 import org.apache.commons.lang3.StringUtils;
 
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.Keybind;
@@ -145,10 +141,29 @@ public class BankedTooltipsOverlay extends Overlay implements KeyListener {
             int bankQuantity = getQuantity(itemId);
             int itemQuantity = item.getQuantity();
             int quantity = config.includeInventory() ? itemQuantity + bankQuantity : bankQuantity;
-            return "Total Quantity: " + quantity;
+            long price = getItemPrice(quantity, itemId);
+
+            return price > 0 ? QuantityFormatter.formatNumber(quantity) + " ("
+                    + QuantityFormatter.quantityToStackSize(price) + " gp)"
+                    : QuantityFormatter.formatNumber(quantity);
         }
 
         return null;
+    }
+
+    private long getItemPrice(int quantity, int itemId) {
+        if (!config.displayPrices()) return 0;
+
+        int id = itemManager.canonicalize(itemId);
+
+        if (id == ItemID.COINS_995) return quantity;
+        if (id == ItemID.PLATINUM_TOKEN) return quantity * 1000L;
+
+        ItemComposition itemDef = itemManager.getItemComposition(id);
+
+        if (itemDef.getPrice() <= 0) return 0;
+
+        return (long) itemManager.getItemPrice(id) * quantity;
     }
 
     private int getQuantity(int itemId) {

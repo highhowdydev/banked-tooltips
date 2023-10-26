@@ -32,6 +32,14 @@ public interface BankedTooltipsConfig extends Config
 	default boolean includeInventory() {
 		return true;
 	}
+	@ConfigItem(
+			position = 1,
+			keyName = "displayPrices",
+			name = "Display Prices",
+			description = "Whether to display prices in the banked tooltips",
+			section = generalSettings
+	)
+	default boolean displayPrices() { return false ;}
 
 	@ConfigItem(
 			position = 0,
